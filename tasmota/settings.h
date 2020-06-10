@@ -569,7 +569,13 @@ struct {
   uint8_t	      ledpwm_on;                 // F3F
   uint8_t	      ledpwm_off;                // F40
 
-  uint8_t       free_f42[119];             // F41 - Decrement if adding new Setting variables just above and below
+  uint8_t ledclock_brightness;   // F41
+  uint8_t ledclock_saturation;   // F42
+  uint8_t ledclock_digitColor;   // F43
+  uint8_t ledclock_dotsColor;    // F44
+  uint8_t ledclock_use12h;       // F45
+
+  uint8_t       free_f42[114];             // F46 - Decrement if adding new Setting variables just above and below
 
   // Only 32 bit boundary variables below
   uint16_t      pulse_counter_debounce_low;  // FB8
