@@ -1,7 +1,11 @@
 // Conditional compilation of driver
 #ifdef USE_WS2812B_CLOCK
 
-#define WS2812B_CLOCK_VERSION 2
+#define WS2812B_CLOCK_VERSION 3
+
+//#define LEDCLOCK_32
+#define LEDCLOCK_36
+
 
 // Define driver ID
 #define XSNS_73  73
@@ -10,10 +14,23 @@
 #include <FastLED.h>
 
 
-#define LED_COUNT 36
+#ifdef LEDCLOCK_32
+  /* ledclock1 still uses 32 leds and require different led configuration */    
+  #define LED_COUNT 32
+  #define DOT1 15
+  #define DOT2 16
+#endif
+
+#ifdef LEDCLOCK_36
+  // ledclock2 and ledclock3 which uses 36 leds
+  #define LED_COUNT 36
+  #define DOT1 17
+  #define DOT2 18
+#endif
+
 #define LED_PIN 4 //D2
-#define DOT1 17
-#define DOT2 18
+
+
 
 #define TEST_LEDS_PERIOD_MS 3000   //3 seconds
 
@@ -26,7 +43,7 @@ const char HTTP_SNS_LEDCLOCK[] PROGMEM = "Color %d<br>Dots %d<br>Brightness %d<b
 
 CRGB leds[LED_COUNT];
 
-
+#ifdef LEDCLOCK_36
 byte segGroups[14] = {
   // right (seen from front) digit
   2,   // top, a
@@ -44,19 +61,16 @@ byte segGroups[14] = {
   11,  // bottom left, e
   13,  // top left, f
   16   // center, g
-
 };
+#endif
 
-/* ledclock1 still uses 32 leds
-    and require different led configuration
-  #define LED_COUNT 32
-  #define DOT1 15
-  #define DOT2 16
+#ifdef LEDCLOCK_32
   byte segGroups[14] = {
   2,3,4,5,6,1,0,
   12,13,8,9,10,11,14
   };
-*/
+#endif
+
 
 byte digits[10][7] = {
   { 1, 1, 1, 1, 1, 1, 0 },  // 0
@@ -78,15 +92,6 @@ byte digits[10][7] = {
 #define LEDCLOCK_DOTSCOLOR 0
 #define LEDCLOCK_USE12H 0
 
-/*
-struct {
-  uint8_t brightness = 250;
-  uint8_t saturation = 255;
-  uint8_t digitColor = 0;
-  uint8_t dotsColor = 0;
-  boolean use12H = true;
-} data;
-*/
 
 
 /**
