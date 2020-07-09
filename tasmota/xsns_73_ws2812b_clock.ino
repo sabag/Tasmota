@@ -1,7 +1,7 @@
 // Conditional compilation of driver
 #ifdef USE_WS2812B_CLOCK
 
-#define WS2812B_CLOCK_VERSION 3
+#define WS2812B_CLOCK_VERSION 4
 
 //#define LEDCLOCK_32
 #define LEDCLOCK_36
@@ -10,9 +10,7 @@
 // Define driver ID
 #define XSNS_73  73
 
-#define FASTLED_ALLOW_INTERRUPTS 0
-#include <FastLED.h>
-
+#include <NeoPixelBus.h>
 
 #ifdef LEDCLOCK_32
   /* ledclock1 still uses 32 leds and require different led configuration */    
@@ -28,8 +26,6 @@
   #define DOT2 18
 #endif
 
-#define LED_PIN 4 //D2
-
 
 
 #define TEST_LEDS_PERIOD_MS 3000   //3 seconds
@@ -41,7 +37,6 @@ const char HTTP_SNS_LEDCLOCK[] PROGMEM = "Color %d<br>Dots %d<br>Brightness %d<b
 // LED related variables
 //
 
-CRGB leds[LED_COUNT];
 
 #ifdef LEDCLOCK_36
 byte segGroups[14] = {
@@ -92,6 +87,9 @@ byte digits[10][7] = {
 #define LEDCLOCK_DOTSCOLOR 0
 #define LEDCLOCK_USE12H 0
 
+RgbColor black(0);
+
+NeoPixelBus<NeoGrbFeature, NeoEsp8266Dma800KbpsMethod> strip(LED_COUNT, 2);
 
 
 /**
@@ -175,10 +173,8 @@ void ledClockInit(void){
         Settings.ledclock_use12h = LEDCLOCK_USE12H;
     }
 
-    FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, LED_COUNT);
-    FastLED.setMaxPowerInVoltsAndMilliamps(5, 1000);
-    FastLED.setDither(0);
-    FastLED.setBrightness(Settings.ledclock_brightness);
+    strip.Begin();
+    strip.Show();
 
 }
 
@@ -258,10 +254,27 @@ bool WS2812B_Command(){
     return true;
 }
 
+void showSegment(byte digitPosition, byte segment, byte color) {
+  byte index = digitPosition % 2 == 0 ? 0 : 7;
+  byte stripIndex = segGroups[ index + segment ];
+  if (digitPosition >= 2) {
+    stripIndex += (DOT2 + 1); // this is the first led of the second module
+  }
+  HsbColor hsb( color / 255, Settings.ledclock_saturation / 255, Settings.ledclock_brightness / 255 );
+  strip.SetPixelColor(stripIndex, hsb);
+}
+
+void showDigit(byte digitPosition, byte digit, byte color) {
+  for (byte i = 0; i < 7; i++) {
+    if (digits[digit][i] != 0) {
+      showSegment(digitPosition, i, color);
+    }
+  }
+}
+
 void showLedTime() {
 
-  FastLED.clear();
-  FastLED.setBrightness(Settings.ledclock_brightness);
+  strip.ClearTo(black);
 
   // minutes 
   int minute = RtcTime.minute;
@@ -281,35 +294,22 @@ void showLedTime() {
   // dots as seconds
   int seconds = RtcTime.second;
   if (seconds % 2 == 0) {
-    leds[DOT1].setHSV(Settings.ledclock_dotsColor, Settings.ledclock_saturation, Settings.ledclock_brightness);
-    leds[DOT2].setHSV(Settings.ledclock_dotsColor, Settings.ledclock_saturation, Settings.ledclock_brightness);
+    HsbColor hsb( Settings.ledclock_dotsColor / 255, Settings.ledclock_saturation / 255, Settings.ledclock_brightness / 255 );
+    strip.SetPixelColor(DOT1, hsb);
+    strip.SetPixelColor(DOT2, hsb);
   }
-  FastLED.show();
+  
+  strip.Show();
+
 }
 
-void showSegment(byte digitPosition, byte segment, byte color) {
-  byte index = digitPosition % 2 == 0 ? 0 : 7;
-  byte stripIndex = segGroups[ index + segment ];
-  if (digitPosition >= 2) {
-    stripIndex += (DOT2 + 1); // this is the first led of the second module
-  }
-  leds[stripIndex].setHSV(color, Settings.ledclock_saturation, Settings.ledclock_brightness);
-}
-
-void showDigit(byte digitPosition, byte digit, byte color) {
-  for (byte i = 0; i < 7; i++) {
-    if (digits[digit][i] != 0) {
-      showSegment(digitPosition, i, color);
-    }
-  }
-}
 
 void testLeds() {
   byte ledCount = DOT1 * 2 + 2;
   for (byte i = 0; i < ledCount; i++) {
-    leds[i].setHSV(0, 250, 255);
+    strip.SetPixelColor(i, HsbColor(0, 1, 1));
   }
-  FastLED.show();
+  strip.Show();
   delay(TEST_LEDS_PERIOD_MS);
 }
 
