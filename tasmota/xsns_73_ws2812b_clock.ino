@@ -260,8 +260,10 @@ void showSegment(byte digitPosition, byte segment, byte color) {
   if (digitPosition >= 2) {
     stripIndex += (DOT2 + 1); // this is the first led of the second module
   }
-  HsbColor hsb( color / 255, Settings.ledclock_saturation / 255, Settings.ledclock_brightness / 255 );
-  strip.SetPixelColor(stripIndex, hsb);
+  float fh = color / 255.0;
+  float fs = Settings.ledclock_saturation / 255.0;
+  float fl = Settings.ledclock_brightness * 0.5 / 255.0;
+  strip.SetPixelColor(stripIndex, HslColor(fh, fs, fl) );
 }
 
 void showDigit(byte digitPosition, byte digit, byte color) {
@@ -294,9 +296,9 @@ void showLedTime() {
   // dots as seconds
   int seconds = RtcTime.second;
   if (seconds % 2 == 0) {
-    HsbColor hsb( Settings.ledclock_dotsColor / 255, Settings.ledclock_saturation / 255, Settings.ledclock_brightness / 255 );
-    strip.SetPixelColor(DOT1, hsb);
-    strip.SetPixelColor(DOT2, hsb);
+    HslColor hsl( Settings.ledclock_dotsColor / 255.0, Settings.ledclock_saturation / 255.0, Settings.ledclock_brightness * 0.5 / 255.0 );
+    strip.SetPixelColor(DOT1, hsl);
+    strip.SetPixelColor(DOT2, hsl);
   }
   
   strip.Show();
@@ -307,7 +309,7 @@ void showLedTime() {
 void testLeds() {
   byte ledCount = DOT1 * 2 + 2;
   for (byte i = 0; i < ledCount; i++) {
-    strip.SetPixelColor(i, HsbColor(0, 1, 1));
+    strip.SetPixelColor(i, HsbColor(0, 1.0f, 0.5f));
   }
   strip.Show();
   delay(TEST_LEDS_PERIOD_MS);
