@@ -1,11 +1,11 @@
 // Conditional compilation of driver
 #ifdef USE_WS2812B_CLOCK
 
-#define WS2812B_CLOCK_VERSION 4
+#define WS2812B_CLOCK_VERSION 5
 
 //#define LEDCLOCK_32
-#define LEDCLOCK_36
-
+//#define LEDCLOCK_36
+#define LEDCLOCK_67
 
 // Define driver ID
 #define XSNS_73  73
@@ -16,14 +16,24 @@
   /* ledclock1 still uses 32 leds and require different led configuration */    
   #define LED_COUNT 32
   #define DOT1 15
-  #define DOT2 16
+  #define DOT_COUNT 2
+  #define SEG_COUNT 1
 #endif
 
 #ifdef LEDCLOCK_36
   // ledclock2 and ledclock3 which uses 36 leds
   #define LED_COUNT 36
   #define DOT1 17
-  #define DOT2 18
+  #define DOT_COUNT 2
+  #define SEG_COUNT 1
+#endif
+
+#ifdef LEDCLOCK_67
+  // ledclock which uses the 60 leds/m (3 leds per segment)
+  #define LED_COUNT 67
+  #define DOT1 32
+  #define DOT_COUNT 3
+  #define SEG_COUNT 2
 #endif
 
 
@@ -37,6 +47,25 @@ const char HTTP_SNS_LEDCLOCK[] PROGMEM = "Color %d<br>Dots %d<br>Brightness %d<b
 // LED related variables
 //
 
+#ifdef LEDCLOCK_67
+byte segGroups[14][2] = {         
+  {  4,  5 },                     // top, a
+  {  6,  7 },                     // top right, b
+  {  9, 10 },                     // bottom right, c
+  { 11, 12 },                     // bottom, d
+  { 13, 14 },                     // bottom left, e
+  {  2,  3 },                     // top left, f
+  {  0,  1 },                     // center, g
+  // left (seen from front) digit
+  { 26, 27 },                     // top, a
+  { 28, 29 },                     // top right, b
+  { 17, 18 },                     // bottom right, c
+  { 19, 20 },                     // bottom, d
+  { 21, 22 },                     // bottom left, e
+  { 24, 25 },                     // top left, f
+  { 30, 31 }                      // center, g
+};
+#endif
 
 #ifdef LEDCLOCK_36
 byte segGroups[14] = {
@@ -255,15 +284,23 @@ bool WS2812B_Command(){
 }
 
 void showSegment(byte digitPosition, byte segment, byte color) {
-  byte index = digitPosition % 2 == 0 ? 0 : 7;
-  byte stripIndex = segGroups[ index + segment ];
-  if (digitPosition >= 2) {
-    stripIndex += (DOT2 + 1); // this is the first led of the second module
-  }
-  float fh = color / 255.0;
-  float fs = Settings.ledclock_saturation / 255.0;
-  float fl = Settings.ledclock_brightness * 0.5 / 255.0;
-  strip.SetPixelColor(stripIndex, HslColor(fh, fs, fl) );
+    byte index = digitPosition % 2 == 0 ? 0 : 7;
+    byte moduleDelta = (digitPosition < 2) ? 0 : (DOT1 + DOT_COUNT);
+    float fh = color / 255.0;
+    float fs = Settings.ledclock_saturation / 255.0;
+    float fl = Settings.ledclock_brightness * 0.5 / 255.0;
+
+    #ifdef LEDCLOCK_67
+
+        for(byte i = 0; i < SEG_COUNT; i++) {     
+            strip.SetPixelColor( segGroups[index+segment][i] + moduleDelta, HslColor(fh, fs, fl));
+        }
+
+    #else
+
+        strip.SetPixelColor( segGroups[index + segment] + moduleDelta, HslColor(fh, fs, fl) );
+
+    #endif
 }
 
 void showDigit(byte digitPosition, byte digit, byte color) {
@@ -297,8 +334,9 @@ void showLedTime() {
   int seconds = RtcTime.second;
   if (seconds % 2 == 0) {
     HslColor hsl( Settings.ledclock_dotsColor / 255.0, Settings.ledclock_saturation / 255.0, Settings.ledclock_brightness * 0.5 / 255.0 );
-    strip.SetPixelColor(DOT1, hsl);
-    strip.SetPixelColor(DOT2, hsl);
+    for(byte i = 0; i < DOT_COUNT; i++) {
+        strip.SetPixelColor(DOT1 + i, hsl);
+    }
   }
   
   strip.Show();
@@ -307,9 +345,9 @@ void showLedTime() {
 
 
 void testLeds() {
-  byte ledCount = DOT1 * 2 + 2;
+  byte ledCount = LED_COUNT;
   for (byte i = 0; i < ledCount; i++) {
-    strip.SetPixelColor(i, HsbColor(0, 1.0f, 0.5f));
+    strip.SetPixelColor(i, HslColor(0, 1.0f, 0.5f));
   }
   strip.Show();
   delay(TEST_LEDS_PERIOD_MS);
