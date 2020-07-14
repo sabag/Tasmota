@@ -29,7 +29,7 @@
 #endif
 
 #ifdef LEDCLOCK_67
-  // ledclock which uses the 60 leds/m (3 leds per segment)
+  // ledclock4 which uses the 60 leds/m (3 leds per segment)
   #define LED_COUNT 67
   #define DOT1 32
   #define DOT_COUNT 3
@@ -38,7 +38,7 @@
 
 
 
-#define TEST_LEDS_PERIOD_MS 3000   //3 seconds
+#define TEST_LEDS_PERIOD_MS 1000   //1 seconds
 
 const char HTTP_SNS_LEDCLOCK[] PROGMEM = "Color %d<br>Dots %d<br>Brightness %d<br>Saturation %d<br>12H %d";
 
@@ -203,6 +203,11 @@ void ledClockInit(void){
     }
 
     strip.Begin();
+
+    for (byte i = 0; i < LED_COUNT; i++) {
+        strip.SetPixelColor(i, HslColor(0, 1.0f, 0.5f));
+    }
+
     strip.Show();
 
 }
