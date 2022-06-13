@@ -1,11 +1,12 @@
 // Conditional compilation of driver
 #ifdef USE_WS2812B_CLOCK
 
-#define WS2812B_CLOCK_VERSION 5
+#define WS2812B_CLOCK_VERSION 6
 
-//#define LEDCLOCK_32
-//#define LEDCLOCK_36
-#define LEDCLOCK_67
+// #define LEDCLOCK_32
+// #define LEDCLOCK_36
+// #define LEDCLOCK_67  // ledclock 4 - basic version - 60 led/m
+#define LEDCLOCK_37     // ledclock 5 - tiny version - 60 led/m
 
 // Define driver ID
 #define XSNS_73  73
@@ -24,6 +25,13 @@
   // ledclock2 and ledclock3 which uses 36 leds
   #define LED_COUNT 36
   #define DOT1 17
+  #define DOT_COUNT 2
+  #define SEG_COUNT 1
+#endif
+
+#ifdef LEDCLOCK_37
+  #define LED_COUNT 37
+  #define DOT1 18
   #define DOT_COUNT 2
   #define SEG_COUNT 1
 #endif
@@ -64,6 +72,27 @@ byte segGroups[14][2] = {
   { 21, 22 },                     // bottom left, e
   { 24, 25 },                     // top left, f
   { 30, 31 }                      // center, g
+};
+#endif
+
+#ifdef LEDCLOCK_37
+byte segGroups[14] = {
+  // right (seen from front) digit
+  2,   // top, a
+  3,   // top right, b
+  5,   // bottom right, c
+  6,   // bottom, d
+  7,   // bottom left, e
+  1,   // top left, f
+  0,   // center, g
+
+  15,  // top, a
+  16,  // top right, b
+  10,   // bottom right, c
+  11,   // bottom, d
+  12,  // bottom left, e
+  14,  // top left, f
+  17   // center, g
 };
 #endif
 

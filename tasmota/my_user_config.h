@@ -44,7 +44,7 @@
 \*********************************************************************************************/
 
 // -- Master parameter control --------------------
-#define CFG_HOLDER             4617              // [Reset 1] Change this value (max 32000) to load SECTION1 configuration parameters to flash
+#define CFG_HOLDER             4618              // [Reset 1] Change this value (max 32000) to load SECTION1 configuration parameters to flash
 
 // -- Project -------------------------------------
 #define PROJECT                "tasmota"         // PROJECT is used as the default topic delimiter
@@ -119,7 +119,7 @@
                                                  //   May be named the same as PUB_PREFIX
 // %topic% token options (also ButtonTopic and SwitchTopic)
 #define MQTT_TOPIC             PROJECT "_%06X"   // [Topic] unique MQTT device topic including (part of) device MAC address
-#define MQTT_GRPTOPIC          "tasmotas"        // [GroupTopic] MQTT Group topic
+#define MQTT_GRPTOPIC          "sonoffs"        // [GroupTopic] MQTT Group topic
 #define MQTT_GROUPTOPIC_FORMAT false             // [SetOption75] GroupTopic replaces %topic% (false) or fixed topic cmnd/grouptopic (true)
 #define MQTT_BUTTON_TOPIC      "0"               // [ButtonTopic] MQTT button topic, "0" = same as MQTT_TOPIC, set to 'PROJECT "_BTN_%06X"' for unique topic including device MAC address
 #define MQTT_SWITCH_TOPIC      "0"               // [SwitchTopic] MQTT button topic, "0" = same as MQTT_TOPIC, set to 'PROJECT "_SW_%06X"' for unique topic including device MAC address
@@ -153,7 +153,7 @@
 #define CORS_DOMAIN            ""                // [Cors] CORS Domain for preflight requests
 
 // -- HTTP Options --------------------------------
-#define GUI_SHOW_HOSTNAME      false             // [SetOption53] Show hostname and IP address in GUI main menu
+#define GUI_SHOW_HOSTNAME      true             // [SetOption53] Show hostname and IP address in GUI main menu
 
 // -- HTTP GUI Colors -----------------------------
 // HTML hex color codes. Only 3 and 6 digit hex string values are supported!! See https://www.w3schools.com/colors/colors_hex.asp
@@ -210,17 +210,17 @@
 #define MDNS_ENABLED           false             // [SetOption55] Use mDNS (false = Disable, true = Enable)
 
 // -- Time - Up to three NTP servers in your region
-#define NTP_SERVER1            "pool.ntp.org"       // [NtpServer1] Select first NTP server by name or IP address (129.250.35.250)
-#define NTP_SERVER2            "nl.pool.ntp.org"    // [NtpServer2] Select second NTP server by name or IP address (5.39.184.5)
-#define NTP_SERVER3            "0.nl.pool.ntp.org"  // [NtpServer3] Select third NTP server by name or IP address (93.94.224.67)
+#define NTP_SERVER1            "il.pool.ntp.org"       // [NtpServer1] Select first NTP server by name or IP address (129.250.35.250)
+#define NTP_SERVER2            "asia.pool.ntp.org"    // [NtpServer2] Select second NTP server by name or IP address (5.39.184.5)
+#define NTP_SERVER3            "pool.ntp.org"  // [NtpServer3] Select third NTP server by name or IP address (93.94.224.67)
 
 // -- Time - Start Daylight Saving Time and timezone offset from UTC in minutes
 #define TIME_DST_HEMISPHERE    North             // [TimeDst] Hemisphere (0 or North, 1 or South)
 #define TIME_DST_WEEK          Last              // Week of month (0 or Last, 1 or First, 2 or Second, 3 or Third, 4 or Fourth)
-#define TIME_DST_DAY           Sun               // Day of week (1 or Sun, 2 or Mon, 3 or Tue, 4 or Wed, 5 or Thu, 6 or Fri, 7 or Sat)
+#define TIME_DST_DAY           Fri               // Day of week (1 or Sun, 2 or Mon, 3 or Tue, 4 or Wed, 5 or Thu, 6 or Fri, 7 or Sat)
 #define TIME_DST_MONTH         Mar               // Month (1 or Jan, 2 or Feb, 3 or Mar, 4 or Apr, 5 or May, 6 or Jun, 7 or Jul, 8 or Aug, 9 or Sep, 10 or Oct, 11 or Nov, 12 or Dec)
 #define TIME_DST_HOUR          2                 // Hour (0 to 23)
-#define TIME_DST_OFFSET        +120              // Offset from UTC in minutes (-780 to +780)
+#define TIME_DST_OFFSET        +180              // Offset from UTC in minutes (-780 to +780)
 
 // -- Time - Start Standard Time and timezone offset from UTC in minutes
 #define TIME_STD_HEMISPHERE    North             // [TimeStd] Hemisphere (0 or North, 1 or South)
@@ -228,14 +228,14 @@
 #define TIME_STD_DAY           Sun               // Day of week (1 or Sun, 2 or Mon, 3 or Tue, 4 or Wed, 5 or Thu, 6 or Fri, 7 or Sat)
 #define TIME_STD_MONTH         Oct               // Month (1 or Jan, 2 or Feb, 3 or Mar, 4 or Apr, 5 or May, 6 or Jun, 7 or Jul, 8 or Aug, 9 or Sep, 10 or Oct, 11 or Nov, 12 or Dec)
 #define TIME_STD_HOUR          3                 // Hour (0 to 23)
-#define TIME_STD_OFFSET        +60               // Offset from UTC in minutes (-780 to +780)
+#define TIME_STD_OFFSET        +120              // Offset from UTC in minutes (-780 to +780)
 
 // -- Location ------------------------------------
-#define LATITUDE               48.858360         // [Latitude] Your location to be used with sunrise and sunset
-#define LONGITUDE              2.294442          // [Longitude] Your location to be used with sunrise and sunset
+#define LATITUDE               32.3164         // [Latitude] Your location to be used with sunrise and sunset
+#define LONGITUDE              34.8740          // [Longitude] Your location to be used with sunrise and sunset
 
 // -- Application ---------------------------------
-#define APP_TIMEZONE           1                 // [Timezone] +1 hour (Amsterdam) (-13 .. 14 = hours from UTC, 99 = use TIME_DST/TIME_STD)
+#define APP_TIMEZONE           99                 // [Timezone] +1 hour (Amsterdam) (-13 .. 14 = hours from UTC, 99 = use TIME_DST/TIME_STD)
 #define APP_LEDSTATE           LED_POWER         // [LedState] Function of led
                                                  //   (LED_OFF, LED_POWER, LED_MQTTSUB, LED_POWER_MQTTSUB, LED_MQTTPUB, LED_POWER_MQTTPUB, LED_MQTT, LED_POWER_MQTT)
 #define APP_LEDMASK            0xFFFF            // [LedMask] Assign Relay to Power led (0xFFFF is default)
@@ -348,12 +348,12 @@
 #define MQTT_CLEAN_SESSION   1                   // Mqtt clean session connection (0 = No clean session, 1 = Clean session (default))
 
 // -- MQTT - Domoticz -----------------------------
-#define USE_DOMOTICZ                             // Enable Domoticz (+6k code, +0.3k mem)
+//#define USE_DOMOTICZ                             // Enable Domoticz (+6k code, +0.3k mem)
   #define DOMOTICZ_IN_TOPIC    "domoticz/in"     // Domoticz Input Topic
   #define DOMOTICZ_OUT_TOPIC   "domoticz/out"    // Domoticz Output Topic
 
 // -- MQTT - Home Assistant Discovery -------------
-#define USE_HOME_ASSISTANT                       // Enable Home Assistant Discovery Support (+4.1k code, +6 bytes mem)
+//#define USE_HOME_ASSISTANT                       // Enable Home Assistant Discovery Support (+4.1k code, +6 bytes mem)
   #define HOME_ASSISTANT_DISCOVERY_PREFIX "homeassistant"  // Home Assistant discovery prefix
 
 // -- MQTT - TLS - AWS IoT ------------------------
@@ -375,10 +375,10 @@
 #define USE_WEBSERVER                            // Enable web server and Wifi Manager (+66k code, +8k mem)
   #define WEB_PORT             80                // Web server Port for User and Admin mode
   #define WEB_USERNAME         "admin"           // Web server Admin mode user name
-//  #define USE_JAVASCRIPT_ES6                     // Enable ECMAScript6 syntax using less JavaScript code bytes (fails on IE11)
-//  #define USE_WEBSEND_RESPONSE                   // Enable command WebSend response message (+1k code)
-  #define USE_EMULATION_HUE                      // Enable Hue Bridge emulation for Alexa (+14k code, +2k mem common)
-  #define USE_EMULATION_WEMO                     // Enable Belkin WeMo emulation for Alexa (+6k code, +2k mem common)
+ #define USE_JAVASCRIPT_ES6                     // Enable ECMAScript6 syntax using less JavaScript code bytes (fails on IE11)
+ #define USE_WEBSEND_RESPONSE                   // Enable command WebSend response message (+1k code)
+//  #define USE_EMULATION_HUE                      // Enable Hue Bridge emulation for Alexa (+14k code, +2k mem common)
+//  #define USE_EMULATION_WEMO                     // Enable Belkin WeMo emulation for Alexa (+6k code, +2k mem common)
 
 // -- mDNS ----------------------------------------
 #define USE_DISCOVERY                            // Enable mDNS for the following services (+8k code or +23.5k code with core 2_5_x, +0.3k mem)
@@ -400,8 +400,8 @@
 // -- Rules or Script  ----------------------------
 // Select none or only one of the below defines USE_RULES or USE_SCRIPT
 #define USE_RULES                                // Add support for rules (+8k code)
-//  #define USE_EXPRESSION                         // Add support for expression evaluation in rules (+3k2 code, +64 bytes mem)
-//    #define SUPPORT_IF_STATEMENT                 // Add support for IF statement in rules (+4k2 code, -332 bytes mem)
+  #define USE_EXPRESSION                         // Add support for expression evaluation in rules (+3k2 code, +64 bytes mem)
+    #define SUPPORT_IF_STATEMENT                 // Add support for IF statement in rules (+4k2 code, -332 bytes mem)
 
 //#define USE_SCRIPT                               // Add support for script (+17k code)
   //#define USE_SCRIPT_FATFS 4                     // Script: Add FAT FileSystem Support
@@ -410,38 +410,38 @@
 
 // -- Optional modules ----------------------------
 //#define ROTARY_V1                                // Add support for MI Desk Lamp
-#define USE_SONOFF_RF                            // Add support for Sonoff Rf Bridge (+3k2 code)
-  #define USE_RF_FLASH                           // Add support for flashing the EFM8BB1 chip on the Sonoff RF Bridge. C2CK must be connected to GPIO4, C2D to GPIO5 on the PCB (+2k7 code)
-#define USE_SONOFF_SC                            // Add support for Sonoff Sc (+1k1 code)
-#define USE_TUYA_MCU                             // Add support for Tuya Serial MCU
-  #define TUYA_DIMMER_ID       0                 // Default dimmer Id
+// #define USE_SONOFF_RF                            // Add support for Sonoff Rf Bridge (+3k2 code)
+//  #define USE_RF_FLASH                           // Add support for flashing the EFM8BB1 chip on the Sonoff RF Bridge. C2CK must be connected to GPIO4, C2D to GPIO5 on the PCB (+2k7 code)
+//#define USE_SONOFF_SC                            // Add support for Sonoff Sc (+1k1 code)
+//#define USE_TUYA_MCU                             // Add support for Tuya Serial MCU
+//  #define TUYA_DIMMER_ID       0                 // Default dimmer Id
 //  #define USE_TUYA_TIME                          // Add support for Set Time in Tuya MCU
-#define USE_ARMTRONIX_DIMMERS                    // Add support for Armtronix Dimmers (+1k4 code)
-#define USE_PS_16_DZ                             // Add support for PS-16-DZ Dimmer (+2k code)
-#define USE_SONOFF_IFAN                          // Add support for Sonoff iFan02 and iFan03 (+2k code)
-#define USE_BUZZER                               // Add support for a buzzer (+0k6 code)
-#define USE_ARILUX_RF                            // Add support for Arilux RF remote controller (+0k8 code, 252 iram (non 2.3.0))
-#define USE_SHUTTER                              // Add Shutter support for up to 4 shutter with different motortypes (+11k code)
+//#define USE_ARMTRONIX_DIMMERS                    // Add support for Armtronix Dimmers (+1k4 code)
+//#define USE_PS_16_DZ                             // Add support for PS-16-DZ Dimmer (+2k code)
+//#define USE_SONOFF_IFAN                          // Add support for Sonoff iFan02 and iFan03 (+2k code)
+//#define USE_BUZZER                               // Add support for a buzzer (+0k6 code)
+//#define USE_ARILUX_RF                            // Add support for Arilux RF remote controller (+0k8 code, 252 iram (non 2.3.0))
+//#define USE_SHUTTER                              // Add Shutter support for up to 4 shutter with different motortypes (+11k code)
 #define USE_DEEPSLEEP                            // Add support for deepsleep (+1k code)
-#define USE_EXS_DIMMER                           // Add support for ES-Store WiFi Dimmer (+1k5 code)
+//#define USE_EXS_DIMMER                           // Add support for ES-Store WiFi Dimmer (+1k5 code)
 //  #define EXS_MCU_CMNDS                          // Add command to send MCU commands (+0k8 code)
 //#define USE_HOTPLUG                              // Add support for sensor HotPlug
-#define USE_DEVICE_GROUPS                        // Add support for device groups (+5k5 code)
+//#define USE_DEVICE_GROUPS                        // Add support for device groups (+5k5 code)
   #define DEVICE_GROUPS_ADDRESS 239,255,250,250  // Device groups multicast address
   #define DEVICE_GROUPS_PORT 4447                // Device groups multicast port
   #define USE_DEVICE_GROUPS_SEND                 // Add support for the DevGroupSend command (+0k6 code)
-#define USE_PWM_DIMMER                           // Add support for MJ-SD01/acenx/NTONPOWER PWM dimmers (+2k2 code, DGR=0k4)
+//#define USE_PWM_DIMMER                           // Add support for MJ-SD01/acenx/NTONPOWER PWM dimmers (+2k2 code, DGR=0k4)
   #define USE_PWM_DIMMER_REMOTE                  // Add support for remote switches to PWM Dimmer (requires USE_DEVICE_GROUPS) (+0k9 code)
 //#define USE_KEELOQ                               // Add support for Jarolift rollers by Keeloq algorithm (+4k5 code)
-#define USE_SONOFF_D1                            // Add support for Sonoff D1 Dimmer (+0k7 code)
+//#define USE_SONOFF_D1                            // Add support for Sonoff D1 Dimmer (+0k7 code)
 
 // -- Optional light modules ----------------------
 #define USE_WS2812                               // WS2812 Led string using library NeoPixelBus (+5k code, +1k mem, 232 iram) - Disable by //
 //  #define USE_WS2812_DMA                         // DMA supports only GPIO03 (= Serial RXD) (+1k mem). When USE_WS2812_DMA is enabled expect Exceptions on Pow
   #define USE_WS2812_HARDWARE  NEO_HW_WS2812     // Hardware type (NEO_HW_WS2812, NEO_HW_WS2812X, NEO_HW_WS2813, NEO_HW_SK6812, NEO_HW_LC8812, NEO_HW_APA106)
   #define USE_WS2812_CTYPE     NEO_GRB           // Color type (NEO_RGB, NEO_GRB, NEO_BRG, NEO_RBG, NEO_RGBW, NEO_GRBW)
-#define USE_MY92X1                               // Add support for MY92X1 RGBCW led controller as used in Sonoff B1, Ailight and Lohas
-#define USE_SM16716                              // Add support for SM16716 RGB LED controller (+0k7 code)
+//#define USE_MY92X1                               // Add support for MY92X1 RGBCW led controller as used in Sonoff B1, Ailight and Lohas
+//#define USE_SM16716                              // Add support for SM16716 RGB LED controller (+0k7 code)
 #define USE_SM2135                               // Add support for SM2135 RGBCW led control as used in Action LSC (+0k6 code)
 #define USE_SONOFF_L1                            // Add support for Sonoff L1 led control
 #define USE_ELECTRIQ_MOODL                       // Add support for ElectriQ iQ-wifiMOODL RGBW LED controller (+0k3 code)
@@ -503,7 +503,7 @@
 //  #define USE_MAX44009                           // [I2cDriver28] Enable MAX44009 Ambient Light sensor (I2C addresses 0x4A and 0x4B) (+0k8 code)
 //  #define USE_SCD30                              // [I2cDriver29] Enable Sensiron SCd30 CO2 sensor (I2C address 0x61) (+3k3 code)
 //  #define USE_SPS30                              // [I2cDriver30] Enable Sensiron SPS30 particle sensor (I2C address 0x69) (+1.7 code)
-  #define USE_ADE7953                            // [I2cDriver7] Enable ADE7953 Energy monitor as used on Shelly 2.5 (I2C address 0x38) (+1k5)
+//  #define USE_ADE7953                            // [I2cDriver7] Enable ADE7953 Energy monitor as used on Shelly 2.5 (I2C address 0x38) (+1k5)
 //  #define USE_VL53L0X                            // [I2cDriver31] Enable VL53L0x time of flight sensor (I2C address 0x29) (+4k code)
 //  #define USE_MLX90614                           // [I2cDriver32] Enable MLX90614 ir temp sensor (I2C address 0x5a) (+0.6k code)
 //  #define USE_CHIRP                              // [I2cDriver33] Enable CHIRP soil moisture sensor (variable I2C address, default 0x20)
@@ -591,12 +591,12 @@
 //#define USE_OPENTHERM                            // Add support for OpenTherm (+15k code)
 
 // -- Power monitoring sensors --------------------
-#define USE_ENERGY_MARGIN_DETECTION              // Add support for Energy Margin detection (+1k6 code)
+//#define USE_ENERGY_MARGIN_DETECTION              // Add support for Energy Margin detection (+1k6 code)
   #define USE_ENERGY_POWER_LIMIT                 // Add additional support for Energy Power Limit detection (+1k2 code)
-#define USE_PZEM004T                             // Add support for PZEM004T Energy monitor (+2k code)
-#define USE_PZEM_AC                              // Add support for PZEM014,016 Energy monitor (+1k1 code)
-#define USE_PZEM_DC                              // Add support for PZEM003,017 Energy monitor (+1k1 code)
-#define USE_MCP39F501                            // Add support for MCP39F501 Energy monitor as used in Shelly 2 (+3k1 code)
+//#define USE_PZEM004T                             // Add support for PZEM004T Energy monitor (+2k code)
+//#define USE_PZEM_AC                              // Add support for PZEM014,016 Energy monitor (+1k1 code)
+//#define USE_PZEM_DC                              // Add support for PZEM003,017 Energy monitor (+1k1 code)
+//#define USE_MCP39F501                            // Add support for MCP39F501 Energy monitor as used in Shelly 2 (+3k1 code)
 //#define USE_SDM120                               // Add support for Eastron SDM120-Modbus energy monitor (+1k1 code)
   #define SDM120_SPEED         2400              // SDM120-Modbus RS485 serial speed (default: 2400 baud)
 //#define USE_SDM630                               // Add support for Eastron SDM630-Modbus energy monitor (+0k6 code)
@@ -634,12 +634,12 @@
 // You can reduce this size by disabling some protocols in "lib/IRremoteESP8266.x.x.x/src/IRremoteESP8266.h"
 
 // -- IR Remote features - subset of IR protocols --------------------------
-#define USE_IR_REMOTE                            // Send IR remote commands using library IRremoteESP8266 and ArduinoJson (+4k3 code, 0k3 mem, 48 iram)
+//#define USE_IR_REMOTE                            // Send IR remote commands using library IRremoteESP8266 and ArduinoJson (+4k3 code, 0k3 mem, 48 iram)
   #define USE_IR_SEND_NEC                        // Support IRsend NEC protocol
   #define USE_IR_SEND_RC5                        // Support IRsend Philips RC5 protocol
   #define USE_IR_SEND_RC6                        // Support IRsend Philips RC6 protocol
 
-  #define USE_IR_RECEIVE                         // Support for IR receiver (+7k2 code, 264 iram)
+  //#define USE_IR_RECEIVE                         // Support for IR receiver (+7k2 code, 264 iram)
     #define IR_RCV_BUFFER_SIZE      100          // Max number of packets allowed in capture buffer (default 100 (*2 bytes ram))
     #define IR_RCV_TIMEOUT          15           // Number of milli-Seconds of no-more-data before we consider a message ended (default 15)
     #define IR_RCV_MIN_UNKNOWN_SIZE 6            // Set the smallest sized "UNKNOWN" message packets we actually care about (default 6, max 255)
