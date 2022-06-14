@@ -6,7 +6,7 @@
 // #define LEDCLOCK_32
 // #define LEDCLOCK_36
 // #define LEDCLOCK_67  // ledclock 4 - basic version - 60 led/m
-#define LEDCLOCK_37     // ledclock 5 - tiny version - 60 led/m
+#define LEDCLOCK_38     // ledclock 5 - tiny version - 60 led/m
 
 // Define driver ID
 #define XSNS_73  73
@@ -29,8 +29,8 @@
   #define SEG_COUNT 1
 #endif
 
-#ifdef LEDCLOCK_37
-  #define LED_COUNT 37
+#ifdef LEDCLOCK_38
+  #define LED_COUNT 38
   #define DOT1 18
   #define DOT_COUNT 2
   #define SEG_COUNT 1
@@ -75,7 +75,7 @@ byte segGroups[14][2] = {
 };
 #endif
 
-#ifdef LEDCLOCK_37
+#ifdef LEDCLOCK_38
 byte segGroups[14] = {
   // right (seen from front) digit
   2,   // top, a
